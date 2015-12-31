@@ -42,7 +42,7 @@ if (!$product_info->RecordCount()) {
 if (!$_SESSION['customer_id']) {
   $customer = '';
 } else {
-  $customer_query = "SELECT customers_firstname, customers_lastname, customers_email_address
+  $customer_query = "SELECT customers_firstname, CONCAT(LEFT(customers_lastname,1),'.') AS customers_lastname, customers_email_address
                      FROM " . TABLE_CUSTOMERS . "
                      WHERE customers_id = :customersID";
 
@@ -99,7 +99,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
       
     } else {
       $sql = $db->bindVars($sql, ':customersID', $_SESSION['customer_id'], 'integer');
-      $sql = $db->bindVars($sql, ':customersName', $customer->fields['customers_firstname'] . ' ' . substr( $customer->fields['customers_lastname'], 0, 1) . '.', 'string');
+      $sql = $db->bindVars($sql, ':customersName', $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'], 'string');
       
     }
 

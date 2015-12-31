@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Reviews &mdash; Updated, v1.1.0</title>
+<title>Reviews &mdash; Updated, v1.1.1</title>
 
 <style type="text/css">
 <!--
@@ -57,15 +57,19 @@ ul li ul {
 <body>
 <a name="top" id="top"></a>
 <h1>Reviews &mdash; Updated</h1>
-<h3>Version 1.1.0 released by lat9</h3>
+<h3>Version 1.2.0 released by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="http://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread" target="_blank">http://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread</a></p>
 
 <h2>Version History:</h2>
 <p>This plugin is based on <em>Reviews by Guests</em>, released on April 25, 2009 by Tervarent (code development by Perfectino: www.perfectino.com, www.perfectino.fr).</p>
 <ul>
-<li>v1.0.0, 2012-07-08, Initial release.</li>
-<li>v1.1.0, 2012-09-24, Merged with Zen Cart&reg; v1.5.1 to include the CSS anti-spam feature.</li>
+  <li>v1.0.0, 2012-07-08, Initial release.</li>
+  <li>v1.1.0, 2012-09-24, Merged with Zen Cart&reg; v1.5.1 to include the CSS anti-spam feature.</li>
+  <li>v1.2.0, 2015-12-31: Use Zen Cart&reg; v1.5.5 as the core- and template-override file basis.  The following files were changed:<ol>
+    <li><span class="corefile">/includes/modules/pages/product_reviews_write/header_php.php</span></li>
+  </ol></li>
 </ul>
+
 <h2>What it does</h2>
 <p>This plugin provides updates to the standard Zen Cart processing of reviews for your products:</p>
 <ul>
@@ -88,15 +92,16 @@ ul li ul {
 </ul>
 
 <h2>Installation</h2>
-<p>There are <span class="corefile">core-file overwrites</span> in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
+<p>There are <span class="corefile">core-file</span> and <span class="template">template</span> overwrites in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
 <ol>
 <li>Go to your admin's Tools-&gt;Install SQL Patches; from there you can either upload the reviews_updated_install.sql file or copy and paste the contents of the file.</li>
-<li>Make a backup copy of the <span class="corefile">overwritten core files</span>, then copy the plugin's files to your cart, after renaming the &quot;YOUR_TEMPLATE&quot; folders to match your custom template's name:
-<ol>
-<li>/includes/languages/english/YOUR_TEMPLATE/product_reviews_write.php</li>
-<li class="corefile">/includes/modules/pages/product_reviews_write/header_php.php</li>
-<li class="corefile">/includes/modules/pages/product_reviews_write/jscript_main.php</li>
-<li>/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php</li>
+<li>Make a backup copy of your existing <span class="corefile">core-file</span> and <span class="template">template-override</span> files that are distributed by this plugin.</li>
+<li>Rename the plugins two (2) &quot;YOUR_TEMPLATE&quot; folders to match your active template's name.</li>
+<li>Merge any changes to these files with your existing version of the file, then copy the files to your store's file-system:<ol>
+  <li><span class="template">/includes/languages/english/YOUR_TEMPLATE/product_reviews_write.php</span></li>
+  <li><span class="corefile">/includes/modules/pages/product_reviews_write/header_php.php</span></li>
+  <li><span class="corefile">/includes/modules/pages/product_reviews_write/jscript_main.php</span></li>
+  <li><span class="template">/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php</span></li>
 </ol></li>
 </ol>
 
