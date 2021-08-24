@@ -20,47 +20,43 @@
 // $Id: jscript_main.php 1105 2005-04-04 22:05:35Z birdbrain $
 //
 ?>
-<script language="javascript" type="text/javascript"><!--
+<script>
 var form = "";
 var submitted = false;
 var error = false;
 var error_message = "";
- 
+
 function check_input(field_name, field_size, message) {
   if (form.elements[field_name] && (form.elements[field_name].type != "hidden")) {
     var field_value = form.elements[field_name].value;
- 
+
     if (field_value == '' || field_value.length < field_size) {
       error_message = error_message + "* " + message + "\n";
       error = true;
     }
   }
 }
- 
+
 function check_radio(field_name, message) {
   var isChecked = false;
- 
+
   if (form.elements[field_name] && (form.elements[field_name].type != "hidden")) {
     var radio = form.elements[field_name];
- 
+
     for (var i=0; i<radio.length; i++) {
       if (radio[i].checked == true) {
         isChecked = true;
         break;
       }
     }
- 
+
     if (isChecked == false) {
       error_message = error_message + "* " + message + "\n";
       error = true;
     }
   }
 }
- 
- 
- 
- 
- 
+
 function checkForm(form_name) {
   if (submitted == true) {
     alert("<?php echo JS_ERROR_SUBMITTED; ?>");
@@ -69,12 +65,16 @@ function checkForm(form_name) {
   form = form_name;
   error = false;
   error_message = "<?php echo JS_ERROR; ?>";
- 
- 
-  check_input('review_text',"<?php echo REVIEW_TEXT_MIN_LENGTH; ?>","<?php echo MESSAGE_REVIEW_TEXT_MIN_LENGTH; ?>");
+ check_input('review_text',"<?php echo REVIEW_TEXT_MIN_LENGTH; ?>","<?php echo JS_REVIEW_TEXT; ?>");
+<?php
+//-bof-reviews_updated-lat9  *** 1 of 1 ***
+?>
   check_input('review_name',"<?php echo REVIEW_NAME_MIN_LENGTH; ?>","<?php echo JS_REVIEW_NAME; ?>");
+<?php
+//-eof-reviews_updated-lat9  *** 1 of 1 ***
+?>
   check_radio("rating","<?php echo JS_REVIEW_RATING; ?>");
- 
+
   if (error == true) {
     alert(error_message);
     return false;
@@ -83,8 +83,8 @@ function checkForm(form_name) {
     return true;
   }
 }
- 
+
 function popupWindow(url) {
-  window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
+  window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150,noreferrer')
 }
-//--></script>
+</script>
