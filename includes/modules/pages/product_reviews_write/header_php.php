@@ -43,6 +43,8 @@ if (!$product_info->RecordCount()) {
 }
 
 //-bof-reviews_updated-lat9  *** 2 of 6 ***
+$review_name = '';
+$review_text = '';
 if (!zen_is_logged_in() || zen_in_guest_checkout()) {
     $customer = '';
 } else {
@@ -58,22 +60,27 @@ if (!zen_is_logged_in() || zen_in_guest_checkout()) {
 $error = false;
 if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
   $rating = (int)$_POST['rating'];
-  $review_text = $_POST['review_text'];
+
+//-bof-reviews_updated-lat9   *** 3 of 6 ***
+  $review_text = zen_clean_html($_POST['review_text']);;
+//-eof-reviews_updated-lat9  *** 3 of 6 ***
+
   $antiSpam = !empty($_POST[$antiSpamFieldName]) ? 'spam' : '';
   $zco_notifier->notify('NOTIFY_REVIEWS_WRITE_CAPTCHA_CHECK');
   
-//-bof-reviews_updated-lat9  *** 3 of 6 ***
-  $review_name = zen_db_prepare_input(zen_clean_html($_POST['review_name']));
+//-bof-reviews_updated-lat9  *** 4 of 6 ***
+  $review_name = (isset($_POST['review_name'])) ? zen_db_prepare_input(zen_clean_html($_POST['review_name'])) : '';
 
-  if (defined('REVIEW_NAME_MIN_LENGTH') && strlen($review_name) < REVIEW_NAME_MIN_LENGTH && (!zen_is_logged_in() || zen_in_guest_checkout())) {
+  if ((!zen_is_logged_in() || zen_in_guest_checkout()) && defined('REVIEW_NAME_MIN_LENGTH') && strlen($review_name) < REVIEW_NAME_MIN_LENGTH) {
     $error = true;
     $messageStack->add('review_text', JS_REVIEW_NAME);
   }
+//-eof-reviews_updated-lat9  *** 4 of 6 ***
   if (strlen($review_text) < REVIEW_TEXT_MIN_LENGTH) {
     $error = true;
     $messageStack->add('review_text', MESSAGE_REVIEW_TEXT_MIN_LENGTH);
   }
-//-eof-reviews_updated-lat9  *** 3 of 6 ***
+
 
   if (($rating < 1) || ($rating > 5)) {
     $error = true;
@@ -105,7 +112,6 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     } else {
       $sql = $db->bindVars($sql, ':customersID', $_SESSION['customer_id'], 'integer');
       $sql = $db->bindVars($sql, ':customersName', $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'], 'string');
-      
     }
 //-eof-reviews_updated-lat9  *** 5 of 6 ***
 
@@ -140,10 +146,15 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
         $html_msg['EMAIL_MESSAGE_HTML'] .= str_replace('\n','',sprintf(EMAIL_PRODUCT_REVIEW_CONTENT_DETAILS, $review_text));
       
 //-bof-reviews_updated-lat9  *** 6 of 6 ***
-      if ($customer !== '') {
-        $extra_info=email_collect_extra_info($name,$email_address, $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'] , $customer->fields['customers_email_address'] );
+        if ($customer === '') {
+            $customers_name = $review_name;
+            $customers_email_address = 'Not supplied';
+        } else {
+            $customers_name = $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'];
+            $customers_email_address = $customer->fields['customers_email_address'];
+        }
+        $extra_info = email_collect_extra_info($customers_name, $customers_email_address, $customers_name, $customers_email_address);
         $html_msg['EXTRA_INFO'] = $extra_info['HTML'];
-      }
 //-eof-reviews_updated-lat9  *** 6 of 6 ***
 
         $zco_notifier->notify('NOTIFY_EMAIL_READY_WRITE_REVIEW');

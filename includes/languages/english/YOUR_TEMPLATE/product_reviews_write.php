@@ -12,7 +12,7 @@ define('SUB_TITLE_FROM', 'Written by: ');
 
 //-bof-reviews_updated-lat9  *** 1 of 3 ***
 if (zen_is_logged_in() && !zen_in_guest_checkout()) {
-    define('SUB_TITLE_REVIEW', 'For your privacy, your name will be displayed as <b>%s %1.1s.</b> when the review is posted.');
+    define('SUB_TITLE_REVIEW', 'Please tell us what you think and share your opinions with others. Be sure to focus your comments on the product.');
 } else {
     define('SUB_TITLE_REVIEW', 'Your name will be displayed as the text you enter in <em>Your Name</em>. For your privacy, we suggest <b>not</b> using your full name.');
 }
