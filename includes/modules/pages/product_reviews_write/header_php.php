@@ -153,7 +153,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
             $customers_name = $customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname'];
             $customers_email_address = $customer->fields['customers_email_address'];
         }
-        $extra_info = email_collect_extra_info($customers_name, $customers_email_address, $customers_name, $customers_email_address);
+        $extra_info = email_collect_extra_info('', '', $customers_name, $customers_email_address);
         $html_msg['EXTRA_INFO'] = $extra_info['HTML'];
 //-eof-reviews_updated-lat9  *** 6 of 6 ***
 
