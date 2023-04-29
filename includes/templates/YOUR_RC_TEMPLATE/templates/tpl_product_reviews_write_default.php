@@ -2,10 +2,10 @@
 /**
  * Page Template
  *
- * @copyright Copyright 2003-2020 Zen Cart Development Team
+ * @copyright Copyright 2003-2022 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: DrByte 2019 Jul 15 Modified in v1.5.7 $
+ * @version $Id: DrByte 2020 Dec 25 Modified in v1.5.8-alpha $
  */
 ?>
 <div class="centerColumn" id="reviewsWrite">
@@ -24,7 +24,7 @@ if ($messageStack->size('review_text') > 0) {
 <div id="pinfo-left" class="group">
 <!--bof Main Product Image -->
 <?php
-  if (zen_not_null($products_image)) {
+  if (!empty($products_image)) {
 ?>
   <div id="reviewWriteMainImage" class="centeredContent back"><?php
 /**
@@ -62,7 +62,7 @@ if (zen_is_logged_in() && !zen_in_guest_checkout()) {
 }
 //-eof-reviews_updated-lat8  *** 2 of 4 ***
 ?>
-<br class="clearBoth" />
+<br class="clearBoth">
 
 <?php
 //-bof-reviews_updated-lat9  *** 3 of 4 ***
@@ -104,7 +104,7 @@ if (zen_is_logged_in() && !zen_in_guest_checkout()) {
 
 <div class="buttonRow forward"><?php echo zen_image_submit(BUTTON_IMAGE_SUBMIT, BUTTON_SUBMIT_ALT); ?></div>
 
-<div id="reviewsWriteReviewsNotice" class="notice clearBoth"><?php echo TEXT_NO_HTML . (REVIEWS_APPROVAL == '1' ? '<br />' . TEXT_APPROVAL_REQUIRED: ''); ?></div>
+<div id="reviewsWriteReviewsNotice" class="notice clearBoth"><?php echo TEXT_NO_HTML . (REVIEWS_APPROVAL == '1' ? '<br>' . TEXT_APPROVAL_REQUIRED: ''); ?></div>
 
 </form>
 </div>
