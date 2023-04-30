@@ -1,6 +1,8 @@
-# "Reviews Updated" for Zen Cart 1.5.7c and later
+# "Reviews Updated" for Zen Cart 1.5.8 and later
 
-This plugin enables guests to write product reviews.  There are both template and core-file changes required!
+This plugin enables guests to write product reviews.  There are template-file changes required!
+
+Support is provided for use with the built-in `responsive_classic` or `bootstrap` templates (and clones thereof).
 
 ## Zen Cart Support Thread
 
