@@ -11,13 +11,7 @@
 <div class="centerColumn" id="reviewsWrite">
 
 <h1 id="reviewsWriteHeading"><?php echo $products_name . $products_model; ?></h1>
-<?php
-//-bof-reviews_updated-lat9   *** 1 of 4 ***
-if ($messageStack->size('review_text') > 0) {
-    echo $messageStack->output('review_text');
-}
-//-eof-reviews_updated-lat9   *** 1 of 4 ***
-?>
+
 <div id="reviews-write-wrapper">
 <?php echo zen_draw_form('product_reviews_write', zen_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'action=process&products_id=' . $_GET['products_id'], 'SSL'), 'post', 'onsubmit="return checkForm(product_reviews_write);"'); ?>
 
@@ -45,32 +39,27 @@ if ($messageStack->size('review_text') > 0) {
 </div>
 
 <div id="reviews-right">
-
 <?php
-//-bof-reviews_updated-lat9  *** 2 of 4 ***
-if (zen_is_logged_in() && !zen_in_guest_checkout()) {
+//-bof-reviews_updated-lat9  *** 1 of 1 ***
+if (empty($guest_reviews_enabled)) {
 ?>
 <h3 id="reviewsWriteReviewer" class=""><?php echo SUB_TITLE_FROM . '&nbsp;&nbsp;', zen_output_string_protected($customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname']); ?></h3>
 <?php
 } else {
 ?>
+<h3 id="reviewsWriteReviewer"><?php echo SUB_TITLE_FROM; ?></h3>
 <div id="reviewerName">
     <label id="textAreaName" for="review_name"><?php echo TEXT_REVIEW_NAME; ?></label>
-    <?php echo zen_draw_input_field('review_name', $review_name, zen_set_field_length(TABLE_REVIEWS, 'customers_name', 40) . ' id="review_name"'); ?>
+    <?php echo zen_draw_input_field('review_name', zen_output_string_protected($review_name), zen_set_field_length(TABLE_REVIEWS, 'customers_name', 40) . ' id="review_name"'); ?>
 </div>
 <?php
 }
-//-eof-reviews_updated-lat8  *** 2 of 4 ***
+//-eof-reviews_updated-lat9  *** 1 of 1 ***
 ?>
 <br class="clearBoth">
 
-<?php
-//-bof-reviews_updated-lat9  *** 3 of 4 ***
-/*
 <?php if ($messageStack->size('review_text') > 0) echo $messageStack->output('review_text'); ?>
-*/
-//-eof-reviews_updated-lat9  *** 3 of 4 ***
-?>
+
 <div id="reviewsWriteReviewsRate" class="center"><?php echo SUB_TITLE_RATING; ?></div>
 
 <div class="ratingRow">
@@ -92,13 +81,8 @@ if (zen_is_logged_in() && !zen_in_guest_checkout()) {
 
 
 <label id="textAreaReviews" for="review-text"><?php echo SUB_TITLE_REVIEW; ?></label>
-<?php
-//-bof-reviews_updated-lat9  *** 4 of 4 ***
-?>
-<?php echo zen_draw_textarea_field('review_text', 60, 5, $review_text, 'id="review-text"'); ?>
-<?php
-//-eof-reviews_updated-lat9  *** 4 of 4 ***
-?>
+
+<?php echo zen_draw_textarea_field('review_text', 60, 5, '', 'id="review-text"'); ?>
 <?php echo zen_draw_input_field($antiSpamFieldName, '', ' size="60" id="RAS" style="visibility:hidden; display:none;" autocomplete="off"'); ?>
 
 

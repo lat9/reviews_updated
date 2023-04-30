@@ -72,11 +72,28 @@ if (!empty($products_model)) {
 <!--bof products review write card-->
     <div id="productsReviewWrite-card" class="card">
         <div id="productsReviewWrite-card-header" class="card-header">
+<?php
+//-bof-reviews_updated-lat9  *** 1 of 1 ***
+if (empty($guest_reviews_enabled)) {
+?>
             <?php echo SUB_TITLE_FROM, zen_output_string_protected($customer->fields['customers_firstname'] . ' ' . $customer->fields['customers_lastname']); ?>
+<?php
+} else {
+    echo SUB_TITLE_FROM;
+}
+?>
         </div>
         <div id="productsReviewWrite-card-body" class="card-body">
             <?php if ($messageStack->size('review_text') > 0) echo $messageStack->output('review_text'); ?>
-
+<?php
+if (!empty($guest_reviews_enabled)) {
+?>
+            <label for="review-name"><?php echo TEXT_REVIEW_NAME; ?></label>
+            <?php echo zen_draw_input_field('review_name', zen_output_string_protected($review_name)); ?>
+<?php
+}
+//-eof-reviews_updated-lat9  *** 1 of 1 ***
+?>
             <div class="text-center p-3"><?php echo SUB_TITLE_RATING; ?></div>
 
             <div class="custom-control custom-radio custom-control-inline">

@@ -2,10 +2,9 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reviews &mdash; Updated, v1.3.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews &mdash; Updated, v2.0.0</title>
 <style>
-<!--
 a, a:active, a:visited {
   color: #006666;
   text-decoration: none
@@ -14,7 +13,7 @@ a:hover {
     color:#00CC99;
     text-decoration: underline;
 }
-BODY, P, H1, H2, H3, H4, H5, H6, LI, TD, DD, DT {
+body, p, h1, h2, h3, h4, h5, h6, li, td, dd, dt {
   font-family: Verdana, AvantGarde, Tahoma, Arial, sans-serif;
   font-size: 10pt;
   color: black;
@@ -31,14 +30,14 @@ h2 {
   font-size: 16px;
   border-top: 1px solid #404040;
 }
-code {
-  padding-left: 25px;
-}
 ol li {
   margin-left: 0;
 }
 .corefile {
   color: red;
+}
+added {
+  color: blue;
 }
 .removed {
   text-decoration: line-through;
@@ -50,17 +49,31 @@ ol li, ul li {
 ul li ul {
   padding-left: 0;
 }
--->
+.smaller {
+  font-size: smaller;
+}
 </style>
 </head>
 <body>
     <h1>Reviews &mdash; Updated</h1>
-    <h3>Version 1.3.0 released by lat9</h3>
+    <h3>Version 2.0.0 released by lat9</h3>
     <p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread" target="_blank">https://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread</a></p>
 
     <h2>Version History:</h2>
     <p>This plugin is based on <em>Reviews by Guests</em>, released on April 25, 2009 by Tervarent (code development by Perfectino: www.perfectino.com, www.perfectino.fr).</p>
     <ul>
+        <li>v2.0.0, 2023-04-29: Dropping support for Zen Cart versions prior to 1.5.8, adding support for the <em>Bootstrap</em> template.  The following files were changed, <span class="added">added</span> or <span class="removed">removed</span>:<ol>
+            <li><span class="added">/includes/classes/observers/auto.reviews_updated.php</span></li>
+            <li><span class="template">/includes/languages/english/YOUR_TEMPLATE/lang.product_reviews_write.php</span> <span class="smaller">(Added for v2.0.0)</span></li>
+            <li><span class="template removed">/includes/languages/english/YOUR_TEMPLATE/product_reviews_write.php</span> <span class="smaller">(Removed from this distribution only)</span></li>
+            <li><span class="corefile removed">/includes/modules/pages/product_reviews_write/header_php.php</span> <span class="smaller">(Removed from this distribution only)</span></li>
+            <li><span class="corefile removed">/includes/modules/pages/product_reviews_write/jscript_main.php</span> <span class="smaller">(Removed from this distribution only)</span></li>
+            <li><span class="template removed">/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php</span></li>
+            <li><span class="template">/includes/templates/YOUR_BOOTSTRAP_TEMPLATE/templates/tpl_product_reviews_write_default.php</span> <span class="smaller">(Added for v2.0.0)</span></li>
+            <li><span class="template">/includes/templates/YOUR_RC_TEMPLATE/templates/tpl_product_reviews_write_default.php</span> <span class="smaller">(Added for v2.0.0)</span></li>
+            <li><span class="added">/YOUR_ADMIN/includes/auto_loaders/config.reviews_updated_admin.php</span></li>
+            <li><span class="added">/YOUR_ADMIN/includes/init_includes/init_reviews_updated_admin.php</span></li>
+        </ol></li>
         <li>v1.3.1, 2021-08-26: Correcting PHP notices introduced in v1.3.0.  The following files were changed:<ol>
             <li><span class="template">/includes/languages/english/YOUR_TEMPLATE/product_reviews_write.php</span></li>
             <li><span class="corefile">/includes/modules/pages/product_reviews_write/header_php.php</span></li>
@@ -80,12 +93,7 @@ ul li ul {
     </ul>
 
     <h2>What it does</h2>
-    <p>This plugin provides updates to the standard Zen Cart processing of reviews for your products:</p>
-    <ul>
-        <li>Reviews can be written by guests, controlled by an admin configuration value.</li>
-        <li>Upon successful review submission, a message is displayed to the customer indicating that their review has been received.</li>
-        <li>If the customer is required to sign in (or register) prior to writing a review, a message indicating as such is displayed on redirect to the login page.</li>
-    </ul>
+    <p>This plugin provides updates to the standard Zen Cart processing of reviews for your products, enabling reviews to be written by guests &mdash; controlled by an admin configuration value.</li>
     <p>These standard zen-cart database configuration values are used by this plugin:</p>
     <ul>
         <li>Configuration-&gt;Minimum Values-&gt;Product Review Text</li>
@@ -95,25 +103,45 @@ ul li ul {
     </ul>
     <p>These database configuration values are added by this plugin:</p>
     <ul>
-        <li>Configuration-&gt;Minimum Values->&gt;Product Review Write - Guest Reviewer Name (default: <em>5</em>)</li>
-        <li>Configuration-&gt;Product Info-&gt;Enable product reviews by guests? (default: <em>1/true</em>)</li>
+        <li>Configuration :: Minimum Values :: Product Review Write - Guest Reviewer Name (default: <em>5</em>)</li>
+        <li>Configuration :: Product Info :: Enable product reviews by guests? (default: <em>0/false</em>)</li>
     </ul>
 
     <h2>Installation</h2>
-    <p>There are <span class="corefile">core-file</span> and <span class="template">template</span> overwrites in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
+    <p>This plugin requires storefront <span class="template">template</span> overwrites, but modifies no Zen Cart core-files; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
+    <p>Using the plugin's unzipped zip-file contents as a basis:</p>
     <ol>
-        <li>Go to your admin's Tools-&gt;Install SQL Patches; from there you can either upload the reviews_updated_install.sql file or copy and paste the contents of the file.</li>
-        <li>Make a backup copy of your existing <span class="corefile">core-file</span> and <span class="template">template-override</span> files that are distributed by this plugin.</li>
-        <li>Rename the plugin's two (2) &quot;YOUR_TEMPLATE&quot; folders to match your active template's name.</li>
-        <li>Merge any changes to these files with your existing version of the file, then copy the files to your store's file-system:<ol>
-            <li><span class="template">/includes/languages/english/YOUR_TEMPLATE/product_reviews_write.php</span></li>
-            <li><span class="corefile">/includes/modules/pages/product_reviews_write/header_php.php</span></li>
-            <li><span class="corefile">/includes/modules/pages/product_reviews_write/jscript_main.php</span></li>
-            <li><span class="template">/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php</span></li>
+        <li>Rename the YOUR_ADMIN directory to match your site's secret admin directory name.</li>
+        <li>Rename the /includes/languages/english/YOUR_TEMPLATE directory, changing YOUR_TEMPLATE to match your active template's name.</li>
+        <li>If your site uses a template based on the in-built <code>responsive_classic</code> template:<ol type="a">
+            <li>Rename the /includes/templates/YOUR_RC_TEMPLATE directory, changing YOUR_RC_TEMPLATE to match you site's template's name.</li>
+            <li>Delete the /includes/templates/YOUR_BOOTSTRAP_TEMPLATE directory, since the file in that directory isn't used.</li>
+            <li>If you have made changes to the template's <code>tpl_product_reviews_write_default.php</code> module, you'll need to merge the one (1) marked change section in the plugin's version with your previous changes.</li>
         </ol></li>
+        <li>If your site uses a template based on the <code>bootstrap</code> template:<ol type="a">
+            <li>Rename the /includes/templates/YOUR_BOOTSTRAP_TEMPLATE directory, changing YOUR_BOOTSTRAP_TEMPLATE to match you site's template's name.</li>
+            <li>Delete the /includes/templates/YOUR_RC_TEMPLATE directory, since the file in that directory isn't used.</li>
+            <li>If you have made changes to the template's <code>tpl_product_reviews_write_default.php</code> module, you'll need to merge the one (1) marked change section in the plugin's version with your previous changes.</li>
+        </ol></li>
+        <li>Copy the files in the plugin's /includes and renamed /YOUR_ADMIN directory to your site's file-system.</li>
+        <li>Login to (or refresh the screen of) your Zen Cart admin.  You'll see the two configuration settings added by the plugin's admin auto-installer.</li>
+        <li>Review <em>Configuration :: Minimum Values :: Product Review Write - Guest Reviewer Name</em>, changing that minimum length if needed.</li>
+        <li>Go to <em>Configuration :: Product Info :: Enable product reviews by guests?</em> to enable reviews by guests.</li>
     </ol>
 
     <h2>Un-install</h2>
-    <p>Run the <strong>reviews_updated_uninstall.sql</strong> to remove the database entries, then replace the files you previously copied with their initial contents.   The contents of the SQL file <strong>assume</strong> that the DB_PREFIX value in your configure.php files is set to blank ('').  If that's not the case, you'll need to edit the .sql file to add your database prefix to the <em>configuration</em> table's name.  For example, if your DB_PREFIX value is 'zen_', then you would add zen_ to the name of the configuration table (i.e. zen_configuration) before running the SQL script.</p>
+    <p>To un-install the plugin:</p>
+    <ol>
+        <li>Delete the two files in your admin directory:<ol type="a">
+            <li>/includes/auto_loaders/config.reviews_updated_admin.php</li>
+            <li>/includes/init_includes/init_reviews_updated_admin.php</li>
+        </ol></li>
+        <li>Copy the contents of <code>/docs/reviews_updated/uninstall/reviews_updated_uninstall.sql</code>, paste that SQL statement into your admin's <em>Tools :: Install SQL Patches</em> and run the SQL command.</li>
+        <li>The storefront additions for the plugin won't interfere with your storefront operations without the configuration settings just removed, but can be removed for completness:<ol type="a">
+            <li>/includes/classes/observers/auto.reviews_updated.php</li>
+            <li>/includes/languages/english/YOUR_TEMPLATE/lang.product_reviews_write.php</li>
+            <li>/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php, backing out the changes made by the plugin.</li>
+        </ol></li>
+    </ol>
 </body>
 </html>
