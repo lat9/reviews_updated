@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reviews &mdash; Updated, v2.0.0</title>
+<title>Reviews &mdash; Updated, v3.0.0</title>
 <style>
 a, a:active, a:visited {
   color: #006666;
@@ -56,12 +56,13 @@ ul li ul {
 </head>
 <body>
     <h1>Reviews &mdash; Updated</h1>
-    <h3>Version 2.0.0 released by lat9</h3>
+    <h3>Version 3.0.0 released by lat9</h3>
     <p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread" target="_blank">https://www.zen-cart.com/showthread.php?197992-Reviews-Updated-Support-Thread</a></p>
 
     <h2>Version History:</h2>
     <p>This plugin is based on <em>Reviews by Guests</em>, released on April 25, 2009 by Tervarent (code development by Perfectino: www.perfectino.com, www.perfectino.fr).</p>
     <ul>
+        <li>v3.0.0, 2026-11-26: Converted to a Zen Cart encapsulated plugin, supporting Zen Cart versions 2.2.0 and later.</li>
         <li>v2.0.0, 2023-04-29: Dropping support for Zen Cart versions prior to 1.5.8, adding support for the <em>Bootstrap</em> template.  The following files were changed, <span class="added">added</span> or <span class="removed">removed</span>:<ol>
             <li><span class="added">/includes/classes/observers/auto.reviews_updated.php</span></li>
             <li><span class="template">/includes/languages/english/YOUR_TEMPLATE/lang.product_reviews_write.php</span> <span class="smaller">(Added for v2.0.0)</span></li>
@@ -107,41 +108,31 @@ ul li ul {
         <li>Configuration :: Product Info :: Enable product reviews by guests? (default: <em>0/false</em>)</li>
     </ul>
 
-    <h2>Installation</h2>
-    <p>This plugin requires storefront <span class="template">template</span> overwrites, but modifies no Zen Cart core-files; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.</p>
-    <p>Using the plugin's unzipped zip-file contents as a basis:</p>
+    <h2>Installing, Upgrading or Uninstalling</h2>
+    <h3>Initial Installation or Upgrade</h3>
+    <p>Start by copying the distribution's <code>zc_plugins</code> directory (and all its files) to the root of your site's file-system. You should see a <code>zc_plugins/GuestReviews</code> sub-directory when completed and &hellip;</p>
     <ol>
-        <li>Rename the YOUR_ADMIN directory to match your site's secret admin directory name.</li>
-        <li>Rename the /includes/languages/english/YOUR_TEMPLATE directory, changing YOUR_TEMPLATE to match your active template's name.</li>
-        <li>If your site uses a template based on the in-built <code>responsive_classic</code> template:<ol type="a">
-            <li>Rename the /includes/templates/YOUR_RC_TEMPLATE directory, changing YOUR_RC_TEMPLATE to match you site's template's name.</li>
-            <li>Delete the /includes/templates/YOUR_BOOTSTRAP_TEMPLATE directory, since the file in that directory isn't used.</li>
-            <li>If you have made changes to the template's <code>tpl_product_reviews_write_default.php</code> module, you'll need to merge the one (1) marked change section in the plugin's version with your previous changes.</li>
-        </ol></li>
-        <li>If your site uses a template based on the <code>bootstrap</code> template:<ol type="a">
-            <li>Rename the /includes/templates/YOUR_BOOTSTRAP_TEMPLATE directory, changing YOUR_BOOTSTRAP_TEMPLATE to match you site's template's name.</li>
-            <li>Delete the /includes/templates/YOUR_RC_TEMPLATE directory, since the file in that directory isn't used.</li>
-            <li>If you have made changes to the template's <code>tpl_product_reviews_write_default.php</code> module, you'll need to merge the one (1) marked change section in the plugin's version with your previous changes.</li>
-        </ol></li>
-        <li>Copy the files in the plugin's /includes and renamed /YOUR_ADMIN directory to your site's file-system.</li>
-        <li>Login to (or refresh the screen of) your Zen Cart admin.  You'll see the two configuration settings added by the plugin's admin auto-installer.</li>
+        <li>Login to your Zen Cart's admin</li>
+        <li>Navigate to <em>Modules :: Plugin Manager</em>.</li>
+        <li>Click on the row that displays a <code>Plugin Key</code> of <b>GuestReviews</b> and click the associated <b>Install</b> button.</li>
+        <li>The plugin is now installed!</li>
         <li>Review <em>Configuration :: Minimum Values :: Product Review Write - Guest Reviewer Name</em>, changing that minimum length if needed.</li>
         <li>Go to <em>Configuration :: Product Info :: Enable product reviews by guests?</em> to enable reviews by guests.</li>
     </ol>
+    <h4>Upgrading From a Non-Encapsulated Version</h4>
+    <p>Versions of this plugin prior to v3.0.0 required a hand-edit of a template's <code>tpl_product_reviews_write_default.php</code> to add the form-fields required for a guest review. If that edit is present, you'll find a code block bounded by a starting</p>
+    <pre>//-bof-reviews_updated-lat9  *** 1 of 1 ***</pre>
+    <p>and ending</p>
+    <pre>//-eof-reviews_updated-lat9  *** 1 of 1 ***</pre>
+    <p>comment. Back out that change (restoring the template file to its original coding); otherwise, you will have two input fields requesting the guest-customer's review name!</p>
 
-    <h2>Un-install</h2>
-    <p>To un-install the plugin:</p>
+    <h3>Uninstalling</h3>
+    <p>To uninstall <em>Reviews Updated/GuestReviews</em> &hellip;</p>
     <ol>
-        <li>Delete the two files in your admin directory:<ol type="a">
-            <li>/includes/auto_loaders/config.reviews_updated_admin.php</li>
-            <li>/includes/init_includes/init_reviews_updated_admin.php</li>
-        </ol></li>
-        <li>Copy the contents of <code>/docs/reviews_updated/uninstall/reviews_updated_uninstall.sql</code>, paste that SQL statement into your admin's <em>Tools :: Install SQL Patches</em> and run the SQL command.</li>
-        <li>The storefront additions for the plugin won't interfere with your storefront operations without the configuration settings just removed, but can be removed for completness:<ol type="a">
-            <li>/includes/classes/observers/auto.reviews_updated.php</li>
-            <li>/includes/languages/english/YOUR_TEMPLATE/lang.product_reviews_write.php</li>
-            <li>/includes/templates/YOUR_TEMPLATE/templates/tpl_product_reviews_write_default.php, backing out the changes made by the plugin.</li>
-        </ol></li>
+        <li>Navigate to your Zen Cart admin's <em>Modules :: Plugin Manager</em>.</li>
+        <li>Click on the row that displays a <code>Plugin Key</code> of <b>GuestReviews</b> and click the associated <b>Un-Install</b> button.</li>
+        <li>From the confirmation form, click that <b>Un-Install</b> button. That button-click will remove all the plugin's configuration settings and &quot;inactivate&quot; the plugin.</li>
+        <li>If you also want to remove the files associated with the plugin, click the <b>Clean Up</b> button.</li>
     </ol>
 </body>
 </html>

@@ -1,15 +1,14 @@
 <?php
 // -----
 // Part of the "Reviews Updated" plugin by lat9
-// Copyright (C) 2023, Vinos de Frutas Tropicales
+// Copyright (C) 2023-2026, Vinos de Frutas Tropicales
 //
-// Last updated: v2.0.0
+// Last updated: v3.0.0
 //
 class zcObserverReviewsUpdated extends base
 {
-    protected
-        $in_product_reviews_write_page = false,
-        $guest_customer_id = false;
+    protected bool $in_product_reviews_write_page = false;
+    protected int $guest_customer_id = false;
 
     public function __construct()
     {
@@ -19,7 +18,7 @@ class zcObserverReviewsUpdated extends base
         // If "Reviews Updated" is not installed or disabled or the customer's not currently on the
         // 'product_reviews_write' page, nothing further to be done.
         //
-        if (!defined('REVIEWS_BY_GUESTS') || REVIEWS_BY_GUESTS === '0' || !defined('REVIEW_NAME_MIN_LENGTH') || $current_page_base !== FILENAME_PRODUCT_REVIEWS_WRITE) {
+        if ($this->zenConfig('REVIEWS_BY_GUESTS', '0') === '0' || $this->zenConfig('REVIEW_NAME_MIN_LENGTH') === null || $current_page_base !== FILENAME_PRODUCT_REVIEWS_WRITE) {
             return;
         }
 
@@ -34,7 +33,7 @@ class zcObserverReviewsUpdated extends base
         // If currently in guest-checkout, save the guest-customer's pseudo-customer_id.
         //
         if (zen_in_guest_checkout()) {
-            $this->guest_customer_id = $_SESSION['customer_id'] ?? false;
+            $this->guest_customer_id = (int)($_SESSION['customer_id'] ?? -1);
         }
 
         // -----
@@ -85,7 +84,7 @@ class zcObserverReviewsUpdated extends base
             //
             case 'NOTIFY_SEFU_INTERCEPT':
                 if (empty($_SESSION['customer_id'])) {
-                    if ($this->guest_customer_id !== false) {
+                    if ($this->guest_customer_id !== -1) {
                         $_SESSION['customer_id'] = $this->guest_customer_id;
                     } else {
                         unset($_SESSION['customer_id']);
@@ -126,15 +125,15 @@ class zcObserverReviewsUpdated extends base
             // review's database storage and email processing.
             //
             case 'NOTIFY_REVIEWS_WRITE_CAPTCHA_CHECK':
-                global $review_name, $msgStack, $error, $customer;
+                global $review_name, $msgStack, $error, $reviewer;
 
                 $review_name = $_POST['review_name'] ?? '';
                 $review_name = strip_tags($review_name);
-                if (strlen($review_name) < REVIEW_NAME_MIN_LENGTH) {
+                if (mb_strlen($review_name) < (int)$this->zenConfig('REVIEW_NAME_MIN_LENGTH')) {
                     $error = true;
                     $messageStack->add('review_text', JS_REVIEW_NAME, 'error');
                 }
-                $customer->fields = [
+                $reviewer->fields = [
                     'customers_firstname' => $review_name,
                     'customers_lastname' => '',
                     'customers_email_address' => 'Not supplied',
@@ -149,18 +148,60 @@ class zcObserverReviewsUpdated extends base
             case 'NOTIFY_HEADER_END_PRODUCT_REVIEWS_WRITE':
                 global $review_name;
 
-                $review_name = strip_tags($review_name ?? '');
                 if (empty($_SESSION['customer_id'])) {
-                    if ($this->guest_customer_id !== false) {
+                    if ($this->guest_customer_id !== -1) {
+                        $review_name = strip_tags($review_name ?? '');
                         $_SESSION['customer_id'] = $this->guest_customer_id;
+
+                        // ----
+                        // "Attach" to the footer-end notification, where the plugins javascript
+                        // is inserted to 
+                        $this->attach($this, ['NOTIFY_FOOTER_END']);
                     } else {
                         unset($_SESSION['customer_id']);
                     }
                 }
                 break;
 
+            // -----
+            // At the end-of-body processing, inject the plugins script that
+            // replaces the reviewer's name input.
+            //
+            case 'NOTIFY_FOOTER_END':
+                global $review_name;
+?>
+<script id="rbg">
+$(function() {
+    $('#reviewsWriteReviewer', '#productsReviewWrite-card-header').html('<?= SUB_TITLE_FROM ?>');
+    $('#reviewsWriteReviewer').after('<div id="reviewerName">' + drawReviewerName() + '</div>');
+    if ($('#productsReviewWrite-card-body:has(div.alert)').length) {
+        $('#productsReviewWrite-card-body > div.alert').after('\'' + drawReviewerName() + '\'');
+    } else {
+        $('#productsReviewWrite-card-body').after('\'' + drawReviewerName() + '\'');
+    }
+
+    function drawReviewerName()
+    {
+        return
+            '<label" for="review-name"><?= TEXT_REVIEW_NAME ?></label>' +
+            '<?= zen_draw_input_field('review_name', zen_output_string_protected($review_name ?? ''), zen_set_field_length(TABLE_REVIEWS, 'customers_name', 40) . ' id="review-name"') ?>';
+    }
+});
+</script>
+<?php
+                break;
+
             default:
                 break;
         }
+    }
+    
+    protected function zenConfig(string $key, mixed $default = null): mixed
+    {
+        if (function_exists('zen_config')) {
+            return zen_config($key, $default);
+        }
+
+        return defined($key) ? constant($key) : $default;
     }
 }

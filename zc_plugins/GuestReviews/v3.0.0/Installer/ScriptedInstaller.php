@@ -43,9 +43,8 @@ class ScriptedInstaller extends ScriptedInstallBase
     protected function purgeOldFiles(): bool
     {
         $files_to_remove = [
-            DIR_FS_ADMIN . 'includes/auto_loaders/config.SuperGlobalsAdmin.php',
+            DIR_FS_ADMIN . 'includes/auto_loaders/config.reviews_updated_admin.php',
             DIR_FS_ADMIN . 'includes/init_includes/init_reviews_updated_admin.php',
-            DIR_FS_CATALOG . 'includes/auto_loaders/config.SuperGlobals.php',
             DIR_FS_CATALOG . 'includes/classes/observers/auto.reviews_updated.php',
         ];
 
