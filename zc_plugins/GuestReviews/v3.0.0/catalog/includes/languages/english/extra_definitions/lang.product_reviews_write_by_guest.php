@@ -1,9 +1,9 @@
 <?php
 // -----
 // Part of the "Reviews Updated" plugin by lat9
-// Copyright (C) 2023, Vinos de Frutas Tropicales
+// Copyright (C) 2023-2026, Vinos de Frutas Tropicales
 //
-// Last updated: v2.0.0
+// Last updated: v3.0.0
 //
 // -----
 // If the plugin's processing is not enabled, no language overrides needed.
